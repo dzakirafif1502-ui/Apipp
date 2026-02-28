@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Jawaban untuk Apipp 🌷</title>
+</head>
+<body>
+
+<h2>Semua Jawaban 💌</h2>
+<button onclick="loadAnswers()">Load Jawaban</button>
+<div id="list"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "ISI_CONFIG_KAMU",
+  authDomain: "ISI_CONFIG_KAMU",
+  projectId: "ISI_CONFIG_KAMU",
+  storageBucket: "ISI_CONFIG_KAMU",
+  messagingSenderId: "ISI_CONFIG_KAMU",
+  appId: "ISI_CONFIG_KAMU"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.loadAnswers = async function(){
+  const querySnapshot = await getDocs(collection(db,"jawaban"));
+  const list = document.getElementById("list");
+  list.innerHTML="";
+
+  querySnapshot.forEach((doc)=>{
+    const data = doc.data();
+    list.innerHTML+=`
+      <p><b>${data.nama}</b>: ${data.isi}</p>
+      <hr>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>
