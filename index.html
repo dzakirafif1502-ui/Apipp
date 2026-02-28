@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Apipp 💕</title>
+<style>
+body{
+  font-family: "Comic Sans MS", cursive;
+  background: linear-gradient(135deg,#ffd6e8,#c8e7ff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+}
+.card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  width:90%;
+  max-width:400px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+input,textarea{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  margin-top:10px;
+}
+button{
+  margin-top:20px;
+  padding:10px 20px;
+  border:none;
+  border-radius:15px;
+  background:#ff8ec7;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="content">
+  <h2>Hii!! welcome to my sitee 💕</h2>
+  <p>May you tell me your name?</p>
+  <input type="text" id="nameInput">
+  <button onclick="nextStep()">Next</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "ISI_CONFIG_KAMU",
+  authDomain: "ISI_CONFIG_KAMU",
+  projectId: "ISI_CONFIG_KAMU",
+  storageBucket: "ISI_CONFIG_KAMU",
+  messagingSenderId: "ISI_CONFIG_KAMU",
+  appId: "ISI_CONFIG_KAMU"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let step = 0;
+let userName = "";
+
+window.nextStep = async function(){
+  const content = document.getElementById("content");
+
+  if(step === 0){
+    userName = document.getElementById("nameInput").value;
+    content.innerHTML = `
+      <h2>Halooo ${userName || "kamuu"} 🌸</h2>
+      <p>jadiii, gimana sih pandangan kalian ke apipp!!??</p>
+      <button onclick="nextStep()">Next</button>
+    `;
+  }
+
+  else if(step === 1){
+    content.innerHTML = `
+      <h2>apa yang kamu pikirin kalau ada aku? 💭</h2>
+      <textarea id="answerInput" rows="4"></textarea>
+      <button onclick="nextStep()">Kirim</button>
+    `;
+  }
+
+  else if(step === 2){
+    let answer = document.getElementById("answerInput").value;
+
+    await addDoc(collection(db,"jawaban"),{
+      nama:userName,
+      isi:answer,
+      waktu:new Date()
+    });
+
+    content.innerHTML = `
+      <h2>Aaa i seee ✨</h2>
+      <p>Jawaban kamu sudah terkirim 💌</p>
+      <p>Terima kasih sudah berbagi 💖</p>
+    `;
+  }
+
+  step++;
+}
+</script>
+
+</body>
+</html>
